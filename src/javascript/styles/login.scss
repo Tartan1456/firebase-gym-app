@@ -1,0 +1,36 @@
+.login-form {
+  display: flex;
+  flex-direction: column;
+  padding: 1.6em;
+
+  &__input {
+    border: 0.1em $grey solid;
+    border-radius: 0.3em;
+    margin-bottom: 1.5em;
+    padding: 1em;
+  }
+
+  &__submit-btn,
+  &__register-btn {
+    background-color: $turquoise;
+    border: 0.1em $turquoise solid;
+    color: $white;
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 0;
+  }
+
+  &__register-text {
+    padding: 0 1.6em;
+  
+    p {
+      font-size: 1.3em;
+    }
+  }
+
+  &__register-btn {
+    border-radius: 0.3em;
+    padding: 1em;
+    width: 10em;
+  }
+}
