@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import Header from './header';
 import WorkoutContainer from './workouts';
 
 const Home = () => (
-  <div>
+  <Fragment>
     <Header
       title='Workouts'
     />
     <WorkoutContainer />
-  </div>
+  </Fragment>
 );
 
 export default Home;

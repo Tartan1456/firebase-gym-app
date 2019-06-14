@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom'
 import Workout from './workout';
 import Exercise from './exercise';
 
-//const workoutDays = require('../../javascript/workoutDays.json');
-
 class WorkoutContainer extends Component {
   constructor() {
     super();
@@ -15,13 +13,13 @@ class WorkoutContainer extends Component {
   }
 
   componentDidMount() {
-    fetch('/api/workouts')
-    .then(response => response.json())
-    .then(response => {
-      this.setState({
-        workoutDays: response,
-      })
-    });
+    // fetch('/api/workouts')
+    // .then(response => response.json())
+    // .then(response => {
+    //   this.setState({
+    //     workoutDays: response,
+    //   })
+    // });
   }
 
   render() {

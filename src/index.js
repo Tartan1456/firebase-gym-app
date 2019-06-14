@@ -1,18 +1,6 @@
-import React from 'react';
-import { Route, HashRouter as Router, Switch } from 'react-router-dom';
+import { render } from 'react-dom';
+import ReactRouter from './javascript/components/router';
 
-import Home from './javascript/components/home';
-import WorkoutDay from './javascript/components/workout_day';
-import Form from './javascript/components/form';
+import './javascript/styles/application.scss';
 
-const Index = () => (
-  <Router>
-    <Switch>
-      <Route exact path="/" component={Home} />
-      <Route exact path="/workout/:id/edit" component={Form} />
-      <Route path="/workout/:id" component={WorkoutDay} />
-    </Switch>
-  </Router>
-);
-
-export default Index;
+render(ReactRouter,  document.getElementById('root'));
