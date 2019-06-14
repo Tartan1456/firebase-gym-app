@@ -1,0 +1,15 @@
+@import '../styles/colours.scss';
+@import '../styles/header.scss';
+@import '../styles/workout.scss';
+@import '../styles/workout_day.scss';
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 10px;
+}

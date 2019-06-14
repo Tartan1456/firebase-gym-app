@@ -1,0 +1,28 @@
+.workouts-wrapper {
+  display: grid;
+  grid-template-columns: auto;
+  grid-gap: 1em;
+  padding: 1.6em;
+}
+
+.workout {
+  border: 0.1em solid $grey;
+  padding: 1em;
+
+  &__date,
+  &__muscle-set {
+    font-size: 1.3em;
+    padding-bottom: 0.4em;
+  }
+
+  &__muscle-set {
+    padding-bottom: 0.75em;
+  }
+
+  &__exercise {
+    display: flex;
+    flex-direction: row;
+    font-size: 1.2em;
+    justify-content: space-between;
+  }
+}

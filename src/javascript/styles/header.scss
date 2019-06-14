@@ -1,0 +1,9 @@
+.header {
+  background-color: $turquoise;
+
+  &__title {
+    color: $white;
+    font-size: 1.6rem;
+    padding: 1rem;
+  }
+}

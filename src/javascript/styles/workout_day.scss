@@ -1,0 +1,39 @@
+.workoutDay {
+  &__exercise {
+    background-color: $light-grey;
+    border-radius: 0.2em;
+    font-size: 1.5em;
+    margin: 1em;
+    padding: 1em;
+  }
+
+  &__weight {
+    margin: 0.25em 0;
+  }
+
+  &__set {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.25em;
+  }
+
+  &__rep {
+    background-color: $white;
+    border-radius: 2em;
+    color: $black;
+    display: flex;
+    flex-direction: row;
+    height: 10vw;
+    justify-content: center;
+    text-align: center;
+    width: 10vw;
+  }
+
+  &__complete {
+    background-color: $turquoise;
+    color: $white;
+    font-size: 1em;
+    margin-top: 1em;
+    padding: 0.5em;
+  }
+}
