@@ -1,9 +1,18 @@
 .header {
   background-color: $turquoise;
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5em 1em;
 
   &__title {
     color: $white;
     font-size: 1.6rem;
-    padding: 1rem;
+  }
+
+  &__profile {
+    img {
+      width: 2em;
+      height: 2em;
+    }
   }
 }

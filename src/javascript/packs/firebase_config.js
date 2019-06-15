@@ -1,4 +1,4 @@
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyBytoepS0flK9FaXKMzucqoHRQIuswCEjw",
   authDomain: "gym-app-1f851.firebaseapp.com",
   databaseURL: "https://gym-app-1f851.firebaseio.com",
