@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 
 import Header from './header';
 import SetsContainer from './sets_container';
@@ -17,14 +19,18 @@ class WorkoutDay extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/api/workouts/${this.workoutId}`)
-    .then(response => response.json())
-    .then(response => {
-      this.setState({
-        headerTitle: response.muscleset,
-        ...response,
+    const db = firebase.firestore();
+    db.collection("users").where('uid', '==', this.props.uid).get().then(snapshot => {
+      snapshot.forEach(doc => {
+        doc.ref.collection('workouts').doc(this.props.match.params.id).get().then(doc => {
+          this.setState({
+            headerTitle: doc.data().name,
+            exercises: doc.data().exercises,
+            date: doc.data().date.toDate().toLocaleDateString(),
+          })
+        })
       })
-    });
+    })
   }
 
   render() {

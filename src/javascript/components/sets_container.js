@@ -70,21 +70,21 @@ export default function SetContainer({ name, sets, reps, weight, i, id, complete
   }
 
   const postToResults = (id, setComplete, passed) => {
-    fetch('/api/results', {
-      method: 'POST',
-      mode: 'same-origin',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        complete: setComplete,
-        date: new Date().toISOString().slice(0, 19).replace('T', ' '),
-        target_id: id,
-        passed,
-      })
-    })
-    .then(response => response.json());
+    // fetch('/api/results', {
+    //   method: 'POST',
+    //   mode: 'same-origin',
+    //   credentials: 'same-origin',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     complete: setComplete,
+    //     date: new Date().toISOString().slice(0, 19).replace('T', ' '),
+    //     target_id: id,
+    //     passed,
+    //   })
+    // })
+    // .then(response => response.json());
   }
 
   return (

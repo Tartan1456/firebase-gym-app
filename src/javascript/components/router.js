@@ -51,11 +51,22 @@ function ReactRouter() {
           ) : (
             <Loading />
           )
-
         }} />
         <Route exact path="/register" component={ Register } />
         <Route exact path="/workout/:id/edit" component={ Form } />
-        <Route path="/workout/:id" component={ WorkoutDay } />
+        <Route path="/workout/:id" render={props => {
+          return !loading ? (
+            loggedIn ? (
+              <WorkoutDay {...props} {...firebaseUser} />
+            ) : (
+              <Login
+                {...props}
+              />
+            )
+          ) : (
+            <Loading />
+          )
+        }} />
       </Switch>
     </Router>
   )
