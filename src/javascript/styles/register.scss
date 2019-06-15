@@ -6,11 +6,14 @@
   &__input {
     border: 0.1em $grey solid;
     border-radius: 0.3em;
-    margin-bottom: 1.5em;
     padding: 1em;
+
+    &--error {
+      border-color: $error-red;
+    }
   }
 
-  &__submit-btn{
+  &__submit-btn {
     background-color: $turquoise;
     border: 0.1em $turquoise solid;
     color: $white;
