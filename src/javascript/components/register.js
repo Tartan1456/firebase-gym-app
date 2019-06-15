@@ -14,7 +14,7 @@ function Register() {
 
   const registerAccount = (e, values) => {
     e.preventDefault();
-    setErrors(validate(values));
+    setErrors(validate(values, 'register'));
     setIsSubmitting(true);
   };
 

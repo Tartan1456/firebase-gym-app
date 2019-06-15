@@ -19,12 +19,19 @@ function ReactRouter() {
   useEffect(() => {
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        setLoggedIn(true);
         setFirebaseUser(user);
+        setLoggedIn(true);
+        setLoading(false);
+      } else {
         setLoading(false);
       }
     });
   });
+
+  const signUserOut = () => {
+    firebase.auth().signOut();
+    window.location.href = '/';
+  }
 
   return (
     <Router>
@@ -34,6 +41,7 @@ function ReactRouter() {
             loggedIn ? (
               <Home 
                 {...firebaseUser}
+                signOut={() => signUserOut()}
               />
             ) : (
               <Login
