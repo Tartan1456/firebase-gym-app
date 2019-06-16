@@ -57,7 +57,11 @@ function ReactRouter() {
         <Route path="/workout/:id" render={props => {
           return !loading ? (
             loggedIn ? (
-              <WorkoutDay {...props} {...firebaseUser} />
+              <WorkoutDay 
+                {...props} 
+                {...firebaseUser}
+                signOut={() => signUserOut()}
+              />
             ) : (
               <Login
                 {...props}

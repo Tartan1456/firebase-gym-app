@@ -27,6 +27,20 @@ class WorkoutDay extends React.Component {
             headerTitle: doc.data().name,
             exercises: doc.data().exercises,
             date: doc.data().date.toDate().toLocaleDateString(),
+          });
+        });
+
+        doc.ref.collection('results').where('workout', '==', this.props.match.params.id).get().then(snapshot => {
+          snapshot.forEach(doc => {
+            this.state.exercises.map((exercise) => {
+              if (exercise.name === doc.data().exercise) {
+                exercise.complete = doc.data().complete;
+              }
+
+              return exercise;
+            });
+
+            //console.table(this.state.exercises);
           })
         })
       })
@@ -35,11 +49,14 @@ class WorkoutDay extends React.Component {
 
   render() {
     const { headerTitle, exercises, date } = this.state;
+    const { displayName, signOut } = this.props;
     return (
       <div>
         <Link to={ '/' }>
           <Header
             title={ headerTitle }
+            displayName={ displayName }
+            signOut={() => signOut()}
           />
         </Link>
         {exercises.map((exercise, i) => {
@@ -49,6 +66,8 @@ class WorkoutDay extends React.Component {
               date={ date }
               key={ i }
               i= { i }
+              uid={ this.props.uid }
+              id={ this.props.match.params.id }
             />
           );
         })}

@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef, Fragment } from 'react';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 
 import Set from './set';
 
-export default function SetContainer({ name, sets, reps, weight, i, id, complete, date }) {
+export default function SetContainer({ name, sets, reps, weight, i, id, uid, complete, date }) {
   const lsId = date + name;
   const isInitialMount = useRef(true);
 
@@ -61,30 +63,36 @@ export default function SetContainer({ name, sets, reps, weight, i, id, complete
       if (JSON.parse(localStorage.getItem(lsId)).every( (val, i, arr) => val === reps)) {
         passed = true;
       }
-      postToResults(id, setComplete, passed);
+      const db = firebase.firestore();
+      db.collection("users").where('uid', '==', uid).get().then(snapshot => {
+        snapshot.forEach(doc => {
+          doc.ref.collection('workouts').doc(id).get().then(doc => {
+            const updatedExercises = doc.data().exercises.map(exercise => {
+              if (exercise.name === name) {
+                exercise.complete = setComplete;
+              }
+
+              return exercise;
+            });
+
+            doc.ref.update({
+              exercises: updatedExercises,
+            })
+          })
+          doc.ref.collection('results').add({
+            complete: setComplete,
+            date: date,
+            passed: passed,
+            exercise: name,
+            workout: id,
+          })
+        })
+      })
     }
   }, [setComplete]);
 
   const completeSet = () => {
     setCompleteState(true);
-  }
-
-  const postToResults = (id, setComplete, passed) => {
-    // fetch('/api/results', {
-    //   method: 'POST',
-    //   mode: 'same-origin',
-    //   credentials: 'same-origin',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     complete: setComplete,
-    //     date: new Date().toISOString().slice(0, 19).replace('T', ' '),
-    //     target_id: id,
-    //     passed,
-    //   })
-    // })
-    // .then(response => response.json());
   }
 
   return (
