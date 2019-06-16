@@ -39,8 +39,6 @@ class WorkoutDay extends React.Component {
 
               return exercise;
             });
-
-            //console.table(this.state.exercises);
           })
         })
       })

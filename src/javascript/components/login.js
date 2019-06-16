@@ -4,7 +4,7 @@ import 'firebase/auth';
 import validate from './registerValidation';
 
 import Header from './header'
-import TextInput from './form_input';
+import TextInput from './text_input';
 import FormErrorMsg from './form_error_message';
 
 function Login({ history }) {
@@ -47,8 +47,8 @@ function Login({ history }) {
         title='Login'
       />
       <form className="login-form" onSubmit={(e) => login(e, values)} noValidate>
-      <TextInput
-          className='login-form__input'
+        <TextInput
+          className='login-form'
           type='email'
           inputName='email'
           placeholder='Email'
@@ -60,7 +60,7 @@ function Login({ history }) {
           errorMsg={ errors.email }
         />
         <TextInput
-          className='login-form__input'
+          className='login-form'
           type='password'
           inputName='password'
           placeholder='Password'

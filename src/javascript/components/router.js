@@ -9,6 +9,7 @@ import WorkoutDay from './workout_day';
 import Login from './login';
 import Register from './register';
 import Form from './form';
+import CreateWorkouts from './create_workouts';
 import Loading from './loading';
 
 function ReactRouter() {
@@ -53,6 +54,9 @@ function ReactRouter() {
           )
         }} />
         <Route exact path="/register" component={ Register } />
+        <Route exact path="/:id/create-workouts" render={props => {
+          return <CreateWorkouts {...props} {...firebaseUser} signOut={() => signUserOut()} />
+        }} />
         <Route exact path="/workout/:id/edit" component={ Form } />
         <Route path="/workout/:id" render={props => {
           return !loading ? (
