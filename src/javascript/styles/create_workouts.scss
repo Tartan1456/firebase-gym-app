@@ -7,6 +7,10 @@
     flex-direction: column;
     margin: 1em;
     padding: 1em;
+
+    &--last-form {
+      margin-bottom: 10em;
+    }
   }
 
   &__label {
@@ -36,11 +40,28 @@
 
     &--add-workout {
       margin-left: 0.667em;
+      margin-bottom: 6em;
+    }
+
+    &--submit {
+      flex: 1;
+      margin: 1em;
     }
   }
 
   &__exercises-header {
     font-size: 1.5em;
     margin-top: 0;
+  }
+
+  &__submit-workouts {
+    background-color: $white;
+    box-shadow: 0 0 1em $grey;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    position: fixed;
+    right: 0;
   }
 }

@@ -8,6 +8,8 @@ import TextInput from './text_input';
 function CreateWorkouts({displayName, signOut}) {
   const [forms, setForms] = useState([{exercises: []}]);
   const [exercises, setExercises] = useState([{}]);
+  const [addWorkoutBtn, setAddWorkoutBtn] = useState(true);
+  const [addExerciseBtn, setAddExerciseBtn] = useState(true);
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -42,10 +44,18 @@ function CreateWorkouts({displayName, signOut}) {
     return setValues({...values, [e.target.name]: e.target.value })
   }
 
+  const createWorkouts = (e) => {
+    console.log(values);
+  };
+
   const addWorkout = (e) => {
     e.preventDefault();
     if (forms.length < 5) {
       setForms([...forms, {exercises: []}]);
+    
+      if (forms.length === 4) {
+        setAddWorkoutBtn(false);
+      }
     }
   }
 
@@ -54,12 +64,26 @@ function CreateWorkouts({displayName, signOut}) {
     const updatedForms = forms.slice();
     if (updatedForms[i].exercises.length < 5) {
       updatedForms[i].exercises.push('Choose an exercise');
+
+      if (updatedForms[i].exercises.length === 5) {
+        setAddExerciseBtn(false);
+      }
     }
     setForms(updatedForms);
   }
 
+  const addDays = (date, days) => {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+
+  const formatDate = date => new Date(date.getTime() - (date.getTimezoneOffset() * 60000 )).toISOString().split("T")[0];
+
   const date = new Date();
-  const currentDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000 )).toISOString().split("T")[0];
+  const currentDate = formatDate(date);
+  const weekFromNow = addDays(date, 7);
+  const maxDate = formatDate(weekFromNow);
 
   return (
     <Fragment>
@@ -70,7 +94,7 @@ function CreateWorkouts({displayName, signOut}) {
       />
       { forms.map((form, i) => {
         return (
-          <form className='create-workouts__form' key={ i }>
+          <form className={`create-workouts__form ${((!addWorkoutBtn && forms.length === i + 1) ? 'create-workouts__form--last-form': '' )}`} key={ i }>
             <TextInput
               className='create-workouts'
               type='text'
@@ -82,12 +106,11 @@ function CreateWorkouts({displayName, signOut}) {
               errors={ errors }
             />
             <label className='create-workouts__label' htmlFor='startDate'>Start Date</label>
-            <input className='create-workouts__input' type='date' name='startDate' defaultValue={currentDate} min={ Date.now() } max={ (Date.now + 7) } />
+            <input className='create-workouts__input' type='date' name='startDate' defaultValue={currentDate} min={ currentDate } max={ maxDate } onChange={handleChange} />
             <p className='create-workouts__exercises-header'>Exercises</p>
             { form.exercises.map((exercise, i) => {
-              console.log(exercise);
               return (
-                <select className='create-workouts__input' key={ i }>
+                <select name='exercise' className='create-workouts__input' key={ i } onChange={handleChange}>
                   <option>{exercise}</option>
                   { exercises.map((exercise, i) => {
                     const optgroups = Object.keys(exercise);
@@ -113,8 +136,12 @@ function CreateWorkouts({displayName, signOut}) {
           </form>
         )
       })}
-
-      <button className='create-workouts__btn create-workouts__btn--add-workout' onClick={e => addWorkout(e)}>Add Workout</button>
+      { addWorkoutBtn && (
+        <button className='create-workouts__btn create-workouts__btn--add-workout' onClick={e => addWorkout(e)}>Add Workout</button>
+      )}
+      <div className='create-workouts__submit-workouts'>
+        <button className='create-workouts__btn create-workouts__btn--submit' onClick={e => createWorkouts(e)}>Create Workouts</button>
+      </div>
     </Fragment>
   )
 };
