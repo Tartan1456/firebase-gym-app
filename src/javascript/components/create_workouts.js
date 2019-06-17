@@ -10,7 +10,7 @@ function CreateWorkouts({displayName, signOut}) {
   const [exercises, setExercises] = useState([{}]);
   const [addWorkoutBtn, setAddWorkoutBtn] = useState(true);
   const [addExerciseBtn, setAddExerciseBtn] = useState(true);
-  const [values, setValues] = useState({});
+  const [values, setValues] = useState([{}]);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -36,13 +36,25 @@ function CreateWorkouts({displayName, signOut}) {
           newExercises.push(armExercises);
           setExercises(newExercises);
         });
-      })
+      });
     });
   }, []);
 
-  const handleChange = (e) => {
-    return setValues({...values, [e.target.name]: e.target.value })
+  const handleFormChange = (e, valuesPos) => {
+    const updatedValues = values.slice();
+    const currentFormObject = updatedValues[valuesPos];
+    currentFormObject[e.target.name] = e.target.value;
+    updatedValues[valuesPos] = currentFormObject;
+    return setValues(updatedValues);
   }
+
+  const handleSelectChange = (e) => {
+    e.preventDefault();
+  };
+
+  useEffect(() => {
+    console.log(values);
+  }, [values]);
 
   const createWorkouts = (e) => {
     console.log(values);
@@ -52,7 +64,7 @@ function CreateWorkouts({displayName, signOut}) {
     e.preventDefault();
     if (forms.length < 5) {
       setForms([...forms, {exercises: []}]);
-    
+
       if (forms.length === 4) {
         setAddWorkoutBtn(false);
       }
@@ -101,16 +113,17 @@ function CreateWorkouts({displayName, signOut}) {
               inputName='name'
               placeholder='eg Monday or Chest or Upper'
               labelText='Workout Name'
-              onChange={handleChange}
+              onChange={handleFormChange}
               values={ values }
               errors={ errors }
+              valuesPos={ i }
             />
             <label className='create-workouts__label' htmlFor='startDate'>Start Date</label>
-            <input className='create-workouts__input' type='date' name='startDate' defaultValue={currentDate} min={ currentDate } max={ maxDate } onChange={handleChange} />
+            <input className='create-workouts__input' type='date' name='startDate' defaultValue={currentDate} min={ currentDate } max={ maxDate } onChange={(e) => handleFormChange(e, i)} />
             <p className='create-workouts__exercises-header'>Exercises</p>
             { form.exercises.map((exercise, i) => {
               return (
-                <select name='exercise' className='create-workouts__input' key={ i } onChange={handleChange}>
+                <select name={`exercise ${i}`} className='create-workouts__input' key={ i } onChange={handleSelectChange}>
                   <option>{exercise}</option>
                   { exercises.map((exercise, i) => {
                     const optgroups = Object.keys(exercise);
