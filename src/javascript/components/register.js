@@ -40,7 +40,7 @@ function Register() {
             displayName: values.name,
           }).then((error) => {
             if (!error) {
-              window.location.href = '/';
+              window.location.href = `/#/${user.uid}/create-workouts`;
             } else {
               setErrors({...errors, nameError: error});
             }

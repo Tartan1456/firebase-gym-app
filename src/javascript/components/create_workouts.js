@@ -52,7 +52,7 @@ function CreateWorkouts({displayName, signOut, uid}) {
     const updatedExerciseValues = values.slice();
     const currentFormObject = updatedExerciseValues[formValuesPos];
     const formExercises = (currentFormObject.exercises ? currentFormObject.exercises : [{}]);
-    const exerciseObj = (formExercises[formValuesPos] ? formExercises[formValuesPos] : {});
+    const exerciseObj = (formExercises[exerciseFormPos] ? formExercises[exerciseFormPos] : {});
     exerciseObj.name = e.target.value;
     formExercises[exerciseFormPos] = exerciseObj;
     updatedExerciseValues[formValuesPos].exercises = formExercises;
@@ -72,6 +72,8 @@ function CreateWorkouts({displayName, signOut, uid}) {
           });
         });
       });
+
+      window.location.href = '/';
     });
   };
 
