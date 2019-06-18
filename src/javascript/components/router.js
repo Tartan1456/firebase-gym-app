@@ -10,6 +10,7 @@ import Login from './login';
 import Register from './register';
 import Form from './form';
 import CreateWorkouts from './create_workouts';
+import SetWorkoutValues from './set_workout_values';
 import Loading from './loading';
 
 function ReactRouter() {
@@ -56,6 +57,9 @@ function ReactRouter() {
         <Route exact path="/register" component={ Register } />
         <Route exact path="/:id/create-workouts" render={props => {
           return <CreateWorkouts {...props} {...firebaseUser} signOut={() => signUserOut()} />
+        }} />
+        <Route exact path="/:id/set-workouts" render={props => {
+          return <SetWorkoutValues {...props} {...firebaseUser} signOut={() => signUserOut()} />
         }} />
         <Route exact path="/workout/:id/edit" component={ Form } />
         <Route path="/workout/:id" render={props => {
