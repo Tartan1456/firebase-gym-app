@@ -5,7 +5,7 @@ import 'firebase/firestore';
 import Header from './header';
 import TextInput from './text_input';
 
-function CreateWorkouts({displayName, signOut}) {
+function CreateWorkouts({displayName, signOut, uid}) {
   const [forms, setForms] = useState([{exercises: []}]);
   const [exercises, setExercises] = useState([{}]);
   const [addWorkoutBtn, setAddWorkoutBtn] = useState(true);
@@ -41,29 +41,45 @@ function CreateWorkouts({displayName, signOut}) {
   }, []);
 
   const handleFormChange = (e, valuesPos) => {
-    const updatedValues = values.slice();
-    const currentFormObject = updatedValues[valuesPos];
+    const updatedWorkoutValues = values.slice();
+    const currentFormObject = updatedWorkoutValues[valuesPos];
     currentFormObject[e.target.name] = e.target.value;
-    updatedValues[valuesPos] = currentFormObject;
-    return setValues(updatedValues);
+    updatedWorkoutValues[valuesPos] = currentFormObject;
+    return setValues(updatedWorkoutValues);
   }
 
-  const handleSelectChange = (e) => {
-    e.preventDefault();
+  const handleSelectChange = (e, exerciseFormPos, formValuesPos) => {
+    const updatedExerciseValues = values.slice();
+    const currentFormObject = updatedExerciseValues[formValuesPos];
+    const formExercises = (currentFormObject.exercises ? currentFormObject.exercises : [{}]);
+    const exerciseObj = (formExercises[formValuesPos] ? formExercises[formValuesPos] : {});
+    exerciseObj.name = e.target.value;
+    formExercises[exerciseFormPos] = exerciseObj;
+    updatedExerciseValues[formValuesPos].exercises = formExercises;
+    return setValues(updatedExerciseValues);
   };
 
-  useEffect(() => {
-    console.log(values);
-  }, [values]);
-
   const createWorkouts = (e) => {
-    console.log(values);
+    const db = firebase.firestore();
+
+    db.collection("users").where('uid', '==', uid).get().then(snapshot => {
+      snapshot.forEach(doc => {
+        values.forEach(workout => {
+          doc.ref.collection('workouts').add({
+            name: workout.name,
+            date: new Date(workout.startDate),
+            exercises: workout.exercises,
+          });
+        });
+      });
+    });
   };
 
   const addWorkout = (e) => {
     e.preventDefault();
     if (forms.length < 5) {
       setForms([...forms, {exercises: []}]);
+      setValues([...values, {}]);
 
       if (forms.length === 4) {
         setAddWorkoutBtn(false);
@@ -105,6 +121,8 @@ function CreateWorkouts({displayName, signOut}) {
         signOut={() => signOut()}
       />
       { forms.map((form, i) => {
+        form['valuesPos'] = i;
+
         return (
           <form className={`create-workouts__form ${((!addWorkoutBtn && forms.length === i + 1) ? 'create-workouts__form--last-form': '' )}`} key={ i }>
             <TextInput
@@ -119,11 +137,11 @@ function CreateWorkouts({displayName, signOut}) {
               valuesPos={ i }
             />
             <label className='create-workouts__label' htmlFor='startDate'>Start Date</label>
-            <input className='create-workouts__input' type='date' name='startDate' defaultValue={currentDate} min={ currentDate } max={ maxDate } onChange={(e) => handleFormChange(e, i)} />
+            <input className='create-workouts__input' type='date' name='startDate' min={ currentDate } max={ maxDate } onChange={(e) => handleFormChange(e, i)} />
             <p className='create-workouts__exercises-header'>Exercises</p>
             { form.exercises.map((exercise, i) => {
               return (
-                <select name={`exercise ${i}`} className='create-workouts__input' key={ i } onChange={handleSelectChange}>
+                <select name={`exercise ${i}`} className='create-workouts__input' key={ i } onChange={(e) => handleSelectChange(e, i, form.valuesPos)}>
                   <option>{exercise}</option>
                   { exercises.map((exercise, i) => {
                     const optgroups = Object.keys(exercise);

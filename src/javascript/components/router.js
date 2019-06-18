@@ -40,7 +40,7 @@ function ReactRouter() {
         <Route exact path="/" render={props => {
           return !loading ? (
             loggedIn ? (
-              <Home 
+              <Home
                 {...firebaseUser}
                 signOut={() => signUserOut()}
               />
@@ -61,8 +61,8 @@ function ReactRouter() {
         <Route path="/workout/:id" render={props => {
           return !loading ? (
             loggedIn ? (
-              <WorkoutDay 
-                {...props} 
+              <WorkoutDay
+                {...props}
                 {...firebaseUser}
                 signOut={() => signUserOut()}
               />
