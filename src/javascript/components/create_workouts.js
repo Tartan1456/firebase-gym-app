@@ -5,7 +5,7 @@ import 'firebase/firestore';
 import Header from './header';
 import TextInput from './text_input';
 
-function CreateWorkouts({displayName, signOut, uid}) {
+function CreateWorkouts({displayName, signOut, uid, history}) {
   const [forms, setForms] = useState([{exercises: []}]);
   const [exercises, setExercises] = useState([{}]);
   const [addWorkoutBtn, setAddWorkoutBtn] = useState(true);
@@ -59,22 +59,24 @@ function CreateWorkouts({displayName, signOut, uid}) {
     return setValues(updatedExerciseValues);
   };
 
-  const createWorkouts = (e) => {
+  const sendWorkoutsToDatabase = async () => {
     const db = firebase.firestore();
 
-    db.collection("users").where('uid', '==', uid).get().then(snapshot => {
+    return db.collection("users").where('uid', '==', uid).get().then(snapshot => {
       snapshot.forEach(doc => {
         values.forEach(workout => {
-          doc.ref.collection('workouts').add({
+          return doc.ref.collection('workouts').add({
             name: workout.name,
             date: new Date(workout.startDate),
             exercises: workout.exercises,
           });
         });
       });
+    })
+  }
 
-      window.location.href = '/';
-    });
+  const createWorkouts = (e) => {
+    sendWorkoutsToDatabase().then(() => history.push('/'));
   };
 
   const addWorkout = (e) => {

@@ -7,7 +7,6 @@ const Header = ({title, displayName, signOut}) => (
       <div 
         className="header__profile"
         onClick={() => {
-          console.log('signout');
           signOut();
         }}
       >
