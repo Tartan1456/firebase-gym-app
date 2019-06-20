@@ -59,7 +59,21 @@ function ReactRouter() {
           return <CreateWorkouts {...props} {...firebaseUser} signOut={() => signUserOut()} />
         }} />
         <Route exact path="/:id/set-workouts" render={props => {
-          return <SetWorkoutValues {...props} {...firebaseUser} signOut={() => signUserOut()} />
+          return !loading ? (
+            loggedIn ? (
+              <SetWorkoutValues
+                {...props}
+                {...firebaseUser}
+                signOut={() => signUserOut()}
+              />
+            ) : (
+              <Login
+                {...props}
+              />
+            )
+          ) : (
+            <Loading />
+          )
         }} />
         <Route exact path="/workout/:id/edit" component={ Form } />
         <Route path="/workout/:id" render={props => {

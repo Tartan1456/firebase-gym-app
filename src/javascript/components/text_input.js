@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-const TextInput = ({className, type, inputName, placeholder, errors, onChange, labelText, valuesPos}) => (
+const TextInput = ({className, type, inputName, placeholder, errors, onChange, labelText, valuesPos, exercisesPos}) => (
   <Fragment>
     { labelText && (
       <label
@@ -15,7 +15,7 @@ const TextInput = ({className, type, inputName, placeholder, errors, onChange, l
       type={ type }
       name={ inputName }
       placeholder={ placeholder }
-      onChange={(e) => onChange(e, valuesPos)}
+      onChange={(e) => onChange(e, valuesPos, exercisesPos)}
     />
   </Fragment>
 );

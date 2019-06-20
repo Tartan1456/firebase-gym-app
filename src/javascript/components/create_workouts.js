@@ -12,7 +12,6 @@ function CreateWorkouts({displayName, signOut, uid, history}) {
   const [addExerciseBtn, setAddExerciseBtn] = useState(true);
   const [values, setValues] = useState([{}]);
   const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     let newExercises = [], chestExercisesValue = [], armExercisesValue = [], chestExercises = {}, armExercises = {};
