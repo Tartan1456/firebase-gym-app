@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
+import moment from 'moment';
 
 import Header from './header';
 import TextInput from './text_input';
@@ -75,7 +76,7 @@ function CreateWorkouts({displayName, signOut, uid, history}) {
   }
 
   const createWorkouts = (e) => {
-    sendWorkoutsToDatabase().then(() => history.push('/'));
+    sendWorkoutsToDatabase().then(() => history.push(`/${uid}/set-workouts`));
   };
 
   const addWorkout = (e) => {
@@ -103,18 +104,9 @@ function CreateWorkouts({displayName, signOut, uid, history}) {
     setForms(updatedForms);
   }
 
-  const addDays = (date, days) => {
-    const result = new Date(date);
-    result.setDate(result.getDate() + days);
-    return result;
-  }
-
-  const formatDate = date => new Date(date.getTime() - (date.getTimezoneOffset() * 60000 )).toISOString().split("T")[0];
-
   const date = new Date();
-  const currentDate = formatDate(date);
-  const weekFromNow = addDays(date, 7);
-  const maxDate = formatDate(weekFromNow);
+  const currentDate = moment(date).format('YYYY-MM-DD');
+  const maxDate = moment(date).add(7, 'days').format('YYYY-MM-DD');
 
   return (
     <Fragment>

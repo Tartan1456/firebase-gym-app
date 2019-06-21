@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
+import moment from 'moment';
 
 import Header from './header';
 import TextInput from './text_input';
@@ -10,8 +11,6 @@ function SetWorkoutValues({displayName, signOut, uid, history}) {
   const [values, setValues] = useState([{}]);
   const [errors, setErrors] = useState({});
 
-  const formatDate = date => new Date(date.getTime() - (date.getTimezoneOffset() * 60000 )).toLocaleString('en-GB').split(",")[0];
-
   useEffect(() => {
     const db = firebase.firestore();
     const updatedWorkouts = [];
@@ -20,7 +19,7 @@ function SetWorkoutValues({displayName, signOut, uid, history}) {
       snapshot.forEach(doc => {
         doc.ref.collection('workouts').get().then(snapshot => {
           snapshot.forEach(doc => {
-            updatedWorkouts.push({...doc.data(), date: formatDate(doc.data().date.toDate())});
+            updatedWorkouts.push({...doc.data(), date: doc.data().date.toDate().toString(), dateString: moment(doc.data().date.toDate()).format('DD/MM/YYYY')});
           });
           setWorkouts(updatedWorkouts);
           setValues(updatedWorkouts);
@@ -52,11 +51,11 @@ function SetWorkoutValues({displayName, signOut, uid, history}) {
     return db.collection("users").where('uid', '==', uid).get().then(snapshot => {
       snapshot.forEach(doc => {
         values.forEach(workout => {
-          doc.ref.collection('workouts').where('name', '==', workout.name).get().then(snapshot => {
+          doc.ref.collection('workouts').where('name', '==', workout.name).where('date', '==', new Date(workout.date)).get().then(snapshot => {
             snapshot.forEach(doc => {
               return doc.ref.set({
                 name: workout.name,
-                date: workout.date,
+                date: new Date(workout.date),
                 exercises: workout.exercises,
               })
             });
@@ -67,7 +66,7 @@ function SetWorkoutValues({displayName, signOut, uid, history}) {
   }
 
   const setWorkoutsValues = (e) => {
-    sendWorkoutsToDatabase().then();
+    sendWorkoutsToDatabase().then(() => history.push('/'));
   };
 
   return (
@@ -83,7 +82,7 @@ function SetWorkoutValues({displayName, signOut, uid, history}) {
         return (
           <form className='set-workouts__form' key={ i }>
             <div className='set-workouts__workout-name'>{ workout.name }</div>
-            <div className='set-workouts__workout-date'>{ workout.date }</div>
+            <div className='set-workouts__workout-date'>{ workout.dateString }</div>
             { workout.exercises.map((exercise, i) => {
               return (
                 <div className='set-workouts__workout-values' key={ i }>
